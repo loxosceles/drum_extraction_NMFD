@@ -9,8 +9,6 @@ import soundfile as sf
 from scipy.signal import correlate
 from scipy.ndimage import binary_erosion, binary_dilation, binary_closing
 
-from .gammatogram import fft_weights
-
 
 def normalize(x):
     return (x - x.min()) / (x.max() - x.min())
@@ -537,22 +535,6 @@ def extract_from_wav(
         canto_wav = wav_select(wav, temp_mask, hop_length=hop_length)
         ruido_wav = wav_select(wav, ruido_mask, hop_length=hop_length)
         return canto_wav, ruido_wav, temp_mask
-
-
-def gammatogram(wav, freq, n_fft, hop_length, channels=100, f_min=100):
-
-    gt_weights = fft_weights(
-        n_fft,
-        freq,
-        channels,
-        f_min,
-        int(freq / 2),
-        int(n_fft / 2) + 1)
-
-    sgram = stft(wav, n_fft=n_fft, hop_length=hop_length)
-
-    result = gt_weights.dot(np.abs(sgram)) / n_fft
-    return result
 
 
 def reduce_horizontal_bands(spec, normed=True, factor=2):

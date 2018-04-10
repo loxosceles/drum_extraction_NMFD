@@ -2,22 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from os import listdir
-from inspect import signature
 from utils.audio.audio_utils import *
 import matplotlib.pyplot as plt
-
-
-def print_matrix_shapes(func):             
-    """Decorator which prints the shape of any matrix as parameter."""
-    def wrapper(*args, **kwargs):  
-        func_args = list(signature(func).parameters.keys())     
-        for i, item in enumerate(args):                         
-            try:                   
-                print("{}: {}".format(func_args[i], item.shape))
-            except AttributeError as e:                         
-                pass               
-        return func(*args, **kwargs) 
-    return wrapper                 
 
 
 def create_mel_spectrogram(wav_file):
